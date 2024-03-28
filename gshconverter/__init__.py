@@ -1,4 +1,4 @@
-__version__ = '0.0.2.dev0'
+__version__ = '0.1.0'
 from bisect import bisect_left as _bisect_left, bisect_right as _bisect_right
 
 _thirty_three_period = (1, 5, 9, 13, 17, 22, 26, 30)
