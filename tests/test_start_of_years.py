@@ -22,14 +22,20 @@ df['leapType'] = (
 
 df['shYear'] = df['shYear'].str.rstrip('*').astype('uint16')
 
-df['shConverted'] = (
-    df['shYear']
-    .map(partial(solar_hijri_to_gregorian, sh_month=1, sh_day=1))
-    .map(lambda x: Timestamp(*x))
-)
 
-assert (df['shConverted'] == df['gDate']).all()
-assert (
-    df['gDate'].map(lambda x: gregorian_to_solar_hijri(x.year, x.month, x.day))
-    == df['shYear'].map(lambda y: (y, 1, 1))
-).all()
+def test_solar_hijri_to_gregorian():
+    converted = (
+        df['shYear']
+        .map(partial(solar_hijri_to_gregorian, sh_month=1, sh_day=1))
+        .map(lambda x: Timestamp(*x))
+    )
+    assert (converted == df['gDate']).all()
+
+
+def test_gregorian_to_solar_hijri():
+    assert (
+        df['gDate'].map(
+            lambda x: gregorian_to_solar_hijri(x.year, x.month, x.day)
+        )
+        == df['shYear'].map(lambda y: (y, 1, 1))
+    ).all()
